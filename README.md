@@ -18,6 +18,18 @@ git clone link-to-repo
 * Extract and move images to a folder named : **Images** and text to **captions.txt**. 
 > ***NOTE** : Place both folders alongside the python files.*
 
+### 2. Training the data
+* Run the following command : 
+```bash
+python train.py
+```
+
+### 3. Generating the caption from an image 
+* Save the image in the same folder with the title **img1.jpg** : 
+```bash
+python generate.py
+```
+
 # Summary
 
 ## Contributed by:
