@@ -62,9 +62,7 @@ to translation and sequence generation and handles the problem of exploding and 
   <img src="assets/LSTM_image.png">
 </p>
 
-
-
-## Results :
+## Training :
 * Training time (model = GoogLenet + LSTM):
 <pre><code>Epoch : 0 , Avg_loss = 8.577890, Time = 2 hour 5 mins 
 Epoch : 1 , Avg_loss = 6.792030, Time = 1 hour 45 mins 
@@ -79,7 +77,24 @@ Epoch : 8 , Avg_loss = 3.034213, Time = 1 hour 25 mins  </code></pre>
   <img width="697" height="398" src="assets/training_loss_plot.png">
 </p>
 
-> ***NOTE** : Here loss plotted is total loss of dataset, which is for 6000 X 5 = 30000 captions. Average loss is loss plotted divided by 30000 .*
+## Results : 
+The model does pretty well on some of the examples : 
+<p align="center">
+  <img width="299" height="299" src="assets/dog.jpg">
+</p>
+<pre><code> Caption : a dog is running through the water. </code></pre> 
+
+Does partially well in some of the examples : Here the model misidentifies the man as a woman although gets the dog and action of dog correct. 
+<p align="center">
+  <img width="299" height="299" src="assets/man and dog.jpg">
+</p>
+<pre><code> Caption : a woman holds a ball while a dog leaps for it. </code></pre> 
+
+There were certain images for which the model does poorly : 
+<p align="center">
+  <img width="299" height="299" src="assets/child.jpg">
+</p>
+<pre><code> Caption : a man in a red shirt is standing on a swing. </code></pre> 
 
 ## Acknowledgement
 - [Medium : Captioning Images with CNN and RNN, using PyTorch](https://medium.com/@stepanulyanin/captioning-images-with-pytorch-bc592e5fd1a3)
