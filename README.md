@@ -1,15 +1,29 @@
 # Summary
 
 ## Introduction
-The main motivation behind the paper was to design a model capable enough to reason various parts of image and use them to generate a rich description. This is very easy for humans, even for a small child, but machine dosnt relate tokens with image itself. The latter would be great help in CCTV cameras, blind aid or even search engines. Earlier models tackling the same exist but rely on some hard-coded visual concepts and sentence templates, limiting the scope of model. The main two contributions of this model are:
+Being able to automatically describe the content of an image using properly formed English sentences is a very challenging task, but it could have great impact, for instance by helping visually impaired people better understand the content of images on the web.
 
-* A deep neural network model that understands the latent alignment or relation between segments of sentences and the region of the image that they describe. Our model associates the two modalities through a common multimodal embedding.
-* A multimodal Recurrent Neural Network architecture that takes an input image and generates its description in text, which surpasses retrieval based baselines, and produce sensible qualitative predictions.
+<img src="https://evergreen.team/assets/images/articles/machine-learning/image_captioning_train.png" alt="Image Captioning"/>
+
+This task is significantly harder, for example, than the well-studied image classification or object recognition tasks, which have been a main focus in the computer vision community. 
+
+Indeed, a description must capture not only the objects contained in an image, but it also must express how these objects relateto each other as well as their attributes and the activities they are involved in. Moreover, the above semantic knowledge has to be expressed in a natural language like English, which means that a language model is needed in addition to visual understanding.
+
+Most previous attempts have proposed to stitch together existing solutions of the above sub-problems, in order to go from an image to its description. In contrast, this model presents a single joint model that takes an image I as input, and is trained to maximize the likelihood p(S|I) of producing a target sequence of words S = {S1, S2, . . .} where each word S(t) comes from a given dictionary, that describes the image adequately. 
+
+## Inspiration 
+The main inspiration of this work comes from recent advances in machine translation, where the task is to transform a sentence S written in a source language, into its translation T in the target language, by maximizing p(T|S). For many years, machine translation was also achieved by a series of separate tasks (translating words individually, aligning words, reordering, etc), but recent work has shown that translation can be done in a much simpler way using Recurrent Neural Networks (RNNs) and still reach state-of the-art performance. An “encoder” RNN reads the source sentence and transforms it into a rich fixed-length vector representation, which in turn in used as the initial
+hidden state of a “decoder” RNN that generates the target sentence.
+
+<img src="https://miro.medium.com/max/4000/0*UldQZaGB0w3omI3Y.png" alt="Machine Translation"/>
+
+## Contribution of the Paper 
+The contributions of the paper are as follows. 
+* First, we present an end-to-end system for the problem. It is a neural net which is fully trainable using stochastic gradient descent. Second, our model combines state-of-art sub-networks for vision and language models. These can be pre-trained on larger corpora and thus can take advantage of additional data. Finally, it yields significantly better performance compared to state-of-the-art approaches. 
+
 ## Model architecture
-The model consists of encoder and decoder models that communicate through a latent space vector. Basically we map an image to some intractable latent space via encoding and map the latent space representation of the image to the sentence space via decoding.
-<p align="center">
-  <img width="973" height="331" src="assets/paper1.JPG">
-</p>
+
+
 
 #### Encoder
 We need to provide image as fixed size of vector to generate text, hence a convolutional neural network is used to encode our images. Here transfer learning is preferred, pretained on ImageNet dataset, to cater the constratints of resources and computation. Torchvision has many pretrained models, and any model can be used like ResNet, AlexNet, Inception_v3, DenseNet. We have to remove the last softmax layer which is for classification purpose, as we only need an encoded vector, of size 512 or 1024 usually.
