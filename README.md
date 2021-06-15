@@ -1,3 +1,23 @@
+# PyTorch Implementation of Show and Tell : Neural Image Caption Generation
+## Pre-requisites
+* PyTorch
+* Convolutional Neural Networks
+* Long Short Term Memory Cells 
+* Spacy
+* Cuda (*highly recommended*)
+
+## Usage 
+Clone the repo to your local system :
+```bash
+git clone link-to-repo
+```
+> ***NOTE**: If you are using Colab, use* **!git** instead.
+
+### 1. Flickr8k Dataset 
+* Dataset used is Flickr8k ([*download here*](https://www.kaggle.com/shadabhussain/flickr8k)). 
+* Extract and move images to a folder named : **Images** and text to **captions.txt**. 
+> ***NOTE** : Place both folders alongside the python files.*
+
 # Summary
 
 ## Contributed by:
@@ -40,11 +60,11 @@ First, we present an end-to-end system for the problem. It is a neural net which
   <img src="assets/paper_model.png">
 </p>
 The model proposes to directly maximize the probability of the correct description given the image by using the following formulation:
-<p align="center">
+<p align="left">
   <img src="assets/paper_parameters.png">
 </p>
 where θ are the parameters of our model, I is an image, and S its correct transcription. Since S represents any sentence, its length is unbounded. Thus, it is common to apply the chain rule to model the joint probability over S0, . . . , SN , where N is the length of this particular example as : 
-<p align="center">
+<p align="left">
   <img src="assets/paper_loss.png">
 </p>
 
@@ -95,6 +115,11 @@ There were certain images for which the model does poorly :
   <img width="299" height="299" src="assets/child.jpg">
 </p>
 <pre><code> Caption : a man in a red shirt is standing on a swing. </code></pre> 
+
+## Some pointers on How To Improve : 
+1. Training for large number of epochs.  
+2. Try experimenting with number of layers of LSTM 
+4. Using attention mechanism to improve as done in the paper -[Show Attend and Tell](https://arxiv.org/abs/1502.03044) 
 
 ## Acknowledgement
 - [Medium : Captioning Images with CNN and RNN, using PyTorch](https://medium.com/@stepanulyanin/captioning-images-with-pytorch-bc592e5fd1a3)
