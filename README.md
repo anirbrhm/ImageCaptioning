@@ -15,8 +15,9 @@ ___
 
 ## Introduction
 Being able to automatically describe the content of an image using properly formed English sentences is a very challenging task, but it could have great impact, for instance by helping visually impaired people better understand the content of images on the web.
-
-<img src="https://evergreen.team/assets/images/articles/machine-learning/image_captioning_train.png" alt="Image Captioning"/>
+<p align="center">
+  <img src="https://cdn.analyticsvidhya.com/wp-content/uploads/2018/03/example.png">
+</p>
 
 This task is significantly harder, for example, than the well-studied image classification or object recognition tasks, which have been a main focus in the computer vision community. 
 
@@ -32,59 +33,39 @@ hidden state of a “decoder” RNN that generates the target sentence.
 
 ## Contribution of the Paper 
 The contributions of the paper are as follows. 
-* First, we present an end-to-end system for the problem. It is a neural net which is fully trainable using stochastic gradient descent. Second, our model combines state-of-art sub-networks for vision and language models. These can be pre-trained on larger corpora and thus can take advantage of additional data. Finally, it yields significantly better performance compared to state-of-the-art approaches. 
+First, we present an end-to-end system for the problem. It is a neural net which is fully trainable using stochastic gradient descent. Second, our model combines state-of-art sub-networks for vision and language models. These can be pre-trained on larger corpora and thus can take advantage of additional data. Finally, it yields significantly better performance compared to state-of-the-art approaches. 
 
 ## Model architecture
-Thus, we propose to directly maximize the probability of
-the correct description given the image by using the following formulation:
-θ
-? = arg max
-θ
-X
-(I,S)
-log p(S|I; θ) (1)
-where θ are the parameters of our model, I is an image, andS its correct transcription. Since S represents any sentence,
-its length is unbounded. Thus, it is common to apply the
-chain rule to model the joint probability over S0, . . . , SN ,
-where N is the length of this particular example as
-log p(S|I) = X
-N
-t=0
-log p(St|I, S0, . . . , St−1) (2)
-
-
-#### Encoder
-We need to provide image as fixed size of vector to generate text, hence a convolutional neural network is used to encode our images. Here transfer learning is preferred, pretained on ImageNet dataset, to cater the constratints of resources and computation. Torchvision has many pretrained models, and any model can be used like ResNet, AlexNet, Inception_v3, DenseNet. We have to remove the last softmax layer which is for classification purpose, as we only need an encoded vector, of size 512 or 1024 usually.
 <p align="center">
-  <img width="242" height="39" src="assets/paper4.JPG">
+  <img src="assets/paper_model.png">
+</p>
+The model proposes to directly maximize the probability of the correct description given the image by using the following formulation:
+<p align="center">
+  <img src="assets/paper_parameters.png">
+</p>
+where θ are the parameters of our model, I is an image, and S its correct transcription. Since S represents any sentence, its length is unbounded. Thus, it is common to apply the chain rule to model the joint probability over S0, . . . , SN , where N is the length of this particular example as : 
+<p align="center">
+  <img src="assets/paper_loss.png">
 </p>
 
-#### Decoder
-This part is a Recurrent Neural Network with LSTM(Long Short Term Memory) cells. A Bidirectional Recurrent Neural Network (BRNN) to compute
-the word representations. The BRNN takes a sequence of N words (encoded in a 1-of-k representation) and transforms each one into an h-dimensional vector. However, the representation of each word is enriched by a variably-sized context around that word. Using the index t = 1 . . . N to denote the position of a word in a sentence, the precise form of the BRNN is as follows(*here f is ReLU activation function, hence f(x) = max(0,x)*) : 
+
+
+### Encoder 
+For the representation of images, the paper uses a Convolutional Neural Network (CNN). They have been widely used and studied for image tasks, and are currently state-of-the art
+for object recognition and detection. The particular choice of CNN uses a novel approach to batch normalization and yields the current best performance on the ILSVRC 2014
+classification competition which is popularly known as the GooLeNet CNN Model. 
+
+### Decoder 
+For producing the caption from the latent representation of the image from the CNN, the paper uses the LSTM Recurrent Neural Networks, which has been applied with great success
+to translation and sequence generation and handles the problem of exploding and vanishing gradients very well. 
 <p align="center">
-  <img width="277" height="181" src="assets/paper5.JPG">
-</p>
-<p align="center">
-  <img width="277" height="250" src="assets/paper2.JPG">
-  <img width="277" height="250" src="assets/paper3.JPG">
+  <img src="assets/LSTM_image.png">
 </p>
 
-#### Loss
-Since the supervision is at the level of entire images and sentences, the strategy is to formulate an image-sentence score as a function of the individual regionword scores. Obviously, a sentence-image pair should have a high matching score if its words have a confident support in the image. The dot product between the i-th region and t-th word as a
-measure of similarity and use it to define the score between image k and sentence l as:
-<p align="center">
-  <img  src="assets/paper7.JPG">
-</p>
-Here, gk is the set of image fragments in image k and gl
-is the set of sentence fragments in sentence l. The indices
-k, l range over the images and sentences in the training set.
-<p align="center">
-  <img width="270" height="240" src="assets/paper6.JPG">
-</p>
+
 
 ## Results :
-* Training time (model = googlenet + LSTM):
+* Training time (model = GoogLenet + LSTM):
 <pre><code>Epoch : 0 , Avg_loss = 8.577890, Time = 2 hour 5 mins 
 Epoch : 1 , Avg_loss = 6.792030, Time = 1 hour 45 mins 
 Epoch : 2 , Avg_loss = 4.928389, Time = 1 hour 37 mins 
@@ -93,27 +74,12 @@ Epoch : 4 , Avg_loss = 3.446215, Time = 1 hour 57 mins
 Epoch : 5 , Avg_loss = 3.281112, Time = 1 hour 42 mins 
 Epoch : 6 , Avg_loss = 3.004768, Time = 1 hour 35 mins 
 Epoch : 7 , Avg_loss = 3.183291, Time = 1 hour 31 mins 
-Epoch : 8 , Avg_loss = 3.034213, Time = 1 hour 25 mins 
-      </code></pre>
+Epoch : 8 , Avg_loss = 3.034213, Time = 1 hour 25 mins  </code></pre>
 <p align="center">
-  <img width="697" height="398" src="assets/training_loss.JPG">
+  <img width="697" height="398" src="assets/training_loss_plot.png">
 </p>
 
-> ***NOTE** : Here loss plotted is total loss of dataset, which is for 6000 X 5 = 30000 captions. Mean loss is loss plotted divided by 30000 .*
-
-* Validation time (model = resnet18):
-<pre><code>
-0 3.007883
-2 3.035437
-4 3.088141
-6 3.161836
-8 3.253206
-</code></pre>
-<p align="center">
-  <img width="697" height="398" src="assets/validation_loss.JPG">
-</p>
-
-> ***NOTE** : Train for more than 50 epochs for optimum results . Training is highly GPU intensive!*
+> ***NOTE** : Here loss plotted is total loss of dataset, which is for 6000 X 5 = 30000 captions. Average loss is loss plotted divided by 30000 .*
 
 ## Acknowledgement
 - [Medium : Captioning Images with CNN and RNN, using PyTorch](https://medium.com/@stepanulyanin/captioning-images-with-pytorch-bc592e5fd1a3)
