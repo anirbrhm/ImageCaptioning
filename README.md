@@ -25,7 +25,8 @@ python train.py
 ```
 
 ### 3. Generating the caption from an image 
-* Save the image in the same folder with the title **img1.jpg** : 
+* Save the image in the same folder with the title **img1.jpg**. 
+* Run the following command : 
 ```bash
 python generate.py
 ```
