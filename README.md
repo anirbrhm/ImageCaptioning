@@ -1,5 +1,18 @@
 # Summary
 
+## Contributed by:
+* [Anirudha Brahma](https://github.com/anirbrhm)
+___
+
+## References
+
+* **Title**: Show and Tell: A Neural Image Caption Generator
+* **Authors**: Oriol Vinyals, Alexander Toshev, Samy Bengio, Dumitru Erhan
+* **Link**: https://arxiv.org/abs/1411.4555
+* **Tags**: Neural Network, Computer Vision, Natural Language Processing, Image Captioning 
+* **Year**: 2014
+___
+
 ## Introduction
 Being able to automatically describe the content of an image using properly formed English sentences is a very challenging task, but it could have great impact, for instance by helping visually impaired people better understand the content of images on the web.
 
@@ -22,7 +35,22 @@ The contributions of the paper are as follows.
 * First, we present an end-to-end system for the problem. It is a neural net which is fully trainable using stochastic gradient descent. Second, our model combines state-of-art sub-networks for vision and language models. These can be pre-trained on larger corpora and thus can take advantage of additional data. Finally, it yields significantly better performance compared to state-of-the-art approaches. 
 
 ## Model architecture
-
+Thus, we propose to directly maximize the probability of
+the correct description given the image by using the following formulation:
+θ
+? = arg max
+θ
+X
+(I,S)
+log p(S|I; θ) (1)
+where θ are the parameters of our model, I is an image, andS its correct transcription. Since S represents any sentence,
+its length is unbounded. Thus, it is common to apply the
+chain rule to model the joint probability over S0, . . . , SN ,
+where N is the length of this particular example as
+log p(S|I) = X
+N
+t=0
+log p(St|I, S0, . . . , St−1) (2)
 
 
 #### Encoder
@@ -56,17 +84,16 @@ k, l range over the images and sentences in the training set.
 </p>
 
 ## Results :
-* Training time (model = resnet18):
-<pre><code>Epoch : 0 , Avg_loss = 3.141907, Time = 9.89 mins
-Epoch : 1 , Avg_loss = 2.978030, Time = 9.89 mins
-Epoch : 2 , Avg_loss = 2.879061, Time = 9.88 mins
-Epoch : 3 , Avg_loss = 2.800483, Time = 9.90 mins
-Epoch : 4 , Avg_loss = 2.734463, Time = 9.88 mins
-Epoch : 5 , Avg_loss = 2.676081, Time = 9.90 mins
-Epoch : 6 , Avg_loss = 2.625130, Time = 9.89 mins
-Epoch : 7 , Avg_loss = 2.579518, Time = 9.90 mins
-Epoch : 8 , Avg_loss = 2.538572, Time = 9.90 mins
-Epoch : 9 , Avg_loss = 2.501715, Time = 9.90 mins
+* Training time (model = googlenet + LSTM):
+<pre><code>Epoch : 0 , Avg_loss = 8.577890, Time = 2 hour 5 mins 
+Epoch : 1 , Avg_loss = 6.792030, Time = 1 hour 45 mins 
+Epoch : 2 , Avg_loss = 4.928389, Time = 1 hour 37 mins 
+Epoch : 3 , Avg_loss = 4.098989, Time = 1 hour 16 mins 
+Epoch : 4 , Avg_loss = 3.446215, Time = 1 hour 57 mins 
+Epoch : 5 , Avg_loss = 3.281112, Time = 1 hour 42 mins 
+Epoch : 6 , Avg_loss = 3.004768, Time = 1 hour 35 mins 
+Epoch : 7 , Avg_loss = 3.183291, Time = 1 hour 31 mins 
+Epoch : 8 , Avg_loss = 3.034213, Time = 1 hour 25 mins 
       </code></pre>
 <p align="center">
   <img width="697" height="398" src="assets/training_loss.JPG">
