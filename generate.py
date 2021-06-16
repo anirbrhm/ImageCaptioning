@@ -4,9 +4,9 @@ import torchvision.models as model
 from tqdm import tqdm
 import torch.optim as optim
 import torchvision.transforms as transforms
-from torch.utils.tensorboard import SummaryWriter
+from PIL import Image  # Load img
 from utils import save_checkpoint, load_checkpoint
-from data_processing import get_loader
+from data_processing import get_loader, Flickr8k_Testing, Flickr8k_Training, Flickr8k, Vocabulary, MyCollate
 from model import ImageToCaption
 from train import train
 
@@ -20,8 +20,9 @@ def print_caption(model, device, dataset):
         ]
     )
     model.eval()
-    test_img = transform(Image.open("test_examples/img.jpg").convert("RGB")).unsqueeze(0)
+    test_img = transform(Image.open("child.jpg").convert("RGB")).unsqueeze(0)
     print(generate_caption(model, test_img.to(device), dataset.vocab))
+
 
 def generate_caption(model, image, vocabulary, max_length=50):
     model.eval()
@@ -63,17 +64,18 @@ def generate_caption(model, image, vocabulary, max_length=50):
         caption.append(vocabulary.itos[idx])
     return caption
 
+
 if __name__ == "__main__":
-    train_dataloader = torch.load("drive/MyDrive/train_dataloader.pt")
-    test_dataloader = torch.load("drive/MyDrive/test_dataloader.pt")
-    train_dataset = torch.load("drive/MyDrive/train_dataset.pt")
-    test_dataset = torch.load("drive/MyDrive/test_dataset.pt")
-    
-    # Hyper-Parameters 
+    train_dataloader = torch.load("train_dataloader.pt")
+    test_dataloader = torch.load("test_dataloader.pt")
+    train_dataset = torch.load("train_dataset.pt")
+    test_dataset = torch.load("test_dataset.pt")
+
+    # Hyper-Parameters
     embed_size = 256
     hidden_size = 256
     vocab_size = len(train_dataset.vocab)
-    num_layers = 1 
+    num_layers = 1
     learning_rate = 3e-4
     if torch.cuda.is_available():
         device = "cuda"
@@ -85,6 +87,6 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss(ignore_index=train_dataset.vocab.stoi["<PAD>"])
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-    step = load_checkpoint(torch.load("drive/MyDrive/saved_checkpoint.pt"), model, optimizer)
+    step = load_checkpoint(torch.load("saved_checkpoint.pt"), model, optimizer)
 
     print_caption(model, device, train_dataset)
