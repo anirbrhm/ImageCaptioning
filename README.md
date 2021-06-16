@@ -133,7 +133,7 @@ There were certain images for which the model does poorly :
 ## Some pointers on How To Improve : 
 1. Training for large number of epochs.  
 2. Try experimenting with number of layers of LSTM 
-4. Using attention mechanism to improve as done in the paper -[Show Attend and Tell](https://arxiv.org/abs/1502.03044) 
+4. Using attention mechanism to improve as done in the paper - [Show Attend and Tell](https://arxiv.org/abs/1502.03044) 
 
 ## Acknowledgement
 - [Medium : Captioning Images with CNN and RNN, using PyTorch](https://medium.com/@stepanulyanin/captioning-images-with-pytorch-bc592e5fd1a3)
