@@ -4,7 +4,7 @@
 * Convolutional Neural Networks
 * Long Short Term Memory Cells 
 * Spacy
-* Cuda (*highly recommended*)
+* Cuda
 
 ## Usage 
 Clone the repo to your local system :
@@ -15,8 +15,9 @@ git clone link-to-repo
 
 ### 1. Flickr8k Dataset 
 * Dataset used is Flickr8k ([*download here*](https://www.kaggle.com/shadabhussain/flickr8k)). 
-* Extract and move images to a folder named : **Images** and text to **captions.txt**. 
-> ***NOTE** : Place both folders alongside the python files.*
+* Extract and move images to a folder named **Images** and text to **captions.txt**. 
+* Put the folder containing **Images** and **captions.txt** in a folder named **flickr8k** 
+> ***NOTE** : Place the **flickr8k** folder alongside the python files.*
 
 ### 2. Training the data
 * Run the following command : 
@@ -25,7 +26,7 @@ python train.py
 ```
 
 ### 3. Generating the caption from an image 
-* Save the image in the same folder with the title **img1.jpg**. 
+* Save the image in the project folder with the title **img.jpg**. 
 * Run the following command : 
 ```bash
 python generate.py
