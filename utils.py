@@ -6,7 +6,7 @@ from PIL import Image
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def save_checkpoint(state, filename="drive/MyDrive/saved_checkpoint.pt"):
+def save_checkpoint(state, filename="saved_checkpoint.pt"):
     print("=> Saving checkpoint")
     torch.save(state, filename)
 
@@ -17,18 +17,18 @@ def load_checkpoint(checkpoint, model, optimizer):
     step = checkpoint["step"]
     return step
 
-def save_train_dataloader(state, filename="drive/MyDrive/saved_train_dataloader.pt"):
+def save_train_dataloader(state, filename="saved_train_dataloader.pt"):
     print("=> Saving Train Dataloader")
-    torch.save(state, filename, map_location = device)
+    torch.save(state, filename)
 
-def save_test_dataloader(state, filename="drive/MyDrive/saved_test_dataloader.pt"):
+def save_test_dataloader(state, filename="saved_test_dataloader.pt"):
     print("=> Saving Test Dataloader")
-    torch.save(state, filename, map_location = device)
+    torch.save(state, filename)
 
-def save_train_dataset(state, filename="drive/MyDrive/saved_train_dataset.pt"):
+def save_train_dataset(state, filename="saved_train_dataset.pt"):
     print("=> Saving Train Dataset")
-    torch.save(state, filename, map_location = device)
+    torch.save(state, filename)
 
-def save_test_dataset(state, filename="drive/MyDrive/saved_test_dataset.pt"):
+def save_test_dataset(state, filename="saved_test_dataset.pt"):
     print("=> Saving Test Dataset")
-    torch.save(state, filename, map_location = device)
+    torch.save(state, filename)
