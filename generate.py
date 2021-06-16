@@ -11,7 +11,7 @@ from model import ImageToCaption
 from train import train
 
 
-def print_examples(model, device, dataset):
+def print_caption(model, device, dataset):
     transform = transforms.Compose(
         [
             transforms.Resize((299, 299)),
@@ -20,8 +20,8 @@ def print_examples(model, device, dataset):
         ]
     )
     model.eval()
-    test_img1 = transform(Image.open("drive/MyDrive/test_examples/img1.jpg").convert("RGB")).unsqueeze(0)
-    print(generate_caption(model, test_img1.to(device), dataset.vocab))
+    test_img = transform(Image.open("test_examples/img.jpg").convert("RGB")).unsqueeze(0)
+    print(generate_caption(model, test_img.to(device), dataset.vocab))
 
 def generate_caption(model, image, vocabulary, max_length=50):
     model.eval()
@@ -68,12 +68,14 @@ if __name__ == "__main__":
     test_dataloader = torch.load("drive/MyDrive/test_dataloader.pt")
     train_dataset = torch.load("drive/MyDrive/train_dataset.pt")
     test_dataset = torch.load("drive/MyDrive/test_dataset.pt")
-
+    
+    # Hyper-Parameters 
     embed_size = 256
     hidden_size = 256
     vocab_size = len(train_dataset.vocab)
-
-    if torch.cuda.is_available:
+    num_layers = 1 
+    learning_rate = 3e-4
+    if torch.cuda.is_available():
         device = "cuda"
     else:
         device = "cpu"
@@ -85,5 +87,4 @@ if __name__ == "__main__":
 
     step = load_checkpoint(torch.load("drive/MyDrive/saved_checkpoint.pt"), model, optimizer)
 
-    print_examples(model, device, train_dataset)
-
+    print_caption(model, device, train_dataset)
