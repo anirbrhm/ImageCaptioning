@@ -25,10 +25,10 @@ def train():
         num_workers=2,
     )
 
-    save_train_dataloader(train_loader, filename="drive/MyDrive/saved_train_dataloader.pt")
-    save_test_dataloader(test_loader, filename="drive/MyDrive/saved_test_dataloader.pt")
-    save_train_dataset(train_dataset, filename="drive/MyDrive/saved_train_dataset.pt")
-    save_test_dataset(test_dataset, filename="drive/MyDrive/saved_test_dataset.pt")
+    save_train_dataloader(train_loader, filename="saved_train_dataloader.pt")
+    save_test_dataloader(test_loader, filename="saved_test_dataloader.pt")
+    save_train_dataset(train_dataset, filename="saved_train_dataset.pt")
+    save_test_dataset(test_dataset, filename="saved_test_dataset.pt")
 
     torch.backends.cudnn.benchmark = True
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -50,7 +50,7 @@ def train():
 
     # initialize model, loss etc
     model = ImageToCaption(embed_size, hidden_size, vocab_size, num_layers).to(device)
-    criterion = nn.CrossEntropyLoss(ignore_index=dataset.vocab.stoi["<PAD>"])
+    criterion = nn.CrossEntropyLoss(ignore_index=train_dataset.vocab.stoi["<PAD>"])
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     if load_model:
